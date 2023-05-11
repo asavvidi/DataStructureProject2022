@@ -1,6 +1,6 @@
 /*
   3494 - Alexandros Savvidis 
-  3275 - Nikos Marinakis 
+
 */
 #include <iostream>
 #include <fstream>
@@ -29,7 +29,7 @@ void eliminate_punct(string& s)
 }
 int main()
 {
-    ifstream file("input.txt");
+    ifstream file("file.txt");
     string linestr; //a line from file.
     string word;
     //Creating data structures.
@@ -52,7 +52,7 @@ int main()
         }
     }
     //Get 1000 words from the file.
-    ifstream fileRandom("input.txt");
+    ifstream fileRandom("file.txt");
     string* W;
     W = new string[1000];
     int c = 0; //counter of words.
