@@ -16,6 +16,7 @@ private:
     node* rightRotate(node* t);
     node* add(string x, node* t);
     node* deleting(string x, node* t);
+    
 public:
     AVL();
     void add(string x);
