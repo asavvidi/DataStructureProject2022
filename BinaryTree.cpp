@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "BinaryTree.h"
 #include "string.h"
 #include <cstring>
@@ -103,15 +104,23 @@ void BinaryTree::postorder(node* t)
 }
 
 //public function searching.
-void BinaryTree::searching(string x)
+bool BinaryTree::searching(string x,int& stored)
 {
     node* t;
     t = finding(x, root); //get node of searching word (x)
 //If word is found print data(appearances) else print "not found"
-    if (t == NULL)
+    if (t == NULL){
         cout << "Word '" << x << "' not found." << endl;
-    else
-        cout << x << "(" << t->a << ")" << endl;
+        return false;
+    }
+    else{
+
+        t->a;
+        stored=t->a;
+        cout << x << "(" << stored << ")" << endl;
+        return true;
+    }
+
 }
 
 

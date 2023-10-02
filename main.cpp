@@ -1,7 +1,3 @@
-/*
-  3494 - Alexandros Savvidis 
-
-*/
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,6 +6,8 @@
 #include "BinaryTree.h"
 #include "AVL.h"
 #include "HashTable.h"
+#include "SortedArray.h"
+#include "Array.h"
 
 using namespace std;
 
@@ -29,7 +27,7 @@ void eliminate_punct(string& s)
 }
 int main()
 {
-    ifstream file("file.txt");
+    ifstream file("input.txt");
     string linestr; //a line from file.
     string word;
     //Creating data structures.
@@ -37,6 +35,9 @@ int main()
     BinaryTree t;
     AVL a;
     HashTable h;
+    SortedArray s;
+    Array us;
+
     while (getline(file, linestr))
     {
         //Eliminating punctuation from line.
@@ -49,12 +50,16 @@ int main()
             t.add(word);
             a.add(word);
             h.add(word);
+            s.add(word);
+            us.add(word);
         }
     }
-    //Get 1000 words from the file.
-    ifstream fileRandom("file.txt");
+    //Get 10000 words from the file.
+    ifstream fileRandom("input.txt");
     string* W;
-    W = new string[1000];
+    W = new string[10000];
+    int stored=0;
+
     int c = 0; //counter of words.
     int numofLines = 1; //counter of lines.
     bool flag = false;
@@ -67,55 +72,144 @@ int main()
             while (iss >> word) //extracting all words from a line.
             {
                 W[c] = word;  //save words in array W.
-                c = c + 1;
-                if (c == 1000)
+                c++;
+                if (c == 10000)
                 {
-                    flag = true; //1000 words found, exit loop.
+                    flag = true; //10000 words found, exit loop.
                     break;
                 }
             }
         }
-        numofLines = numofLines + 1;
+        numofLines++;
         if (flag == true)
             break;
     }
 
+    //Open the file output,txt
+    ofstream myFile("output.txt");
 
-    //Searching these 1000 words in data structures.
-    // 
+
+    //Searching these 10000 words in data structures.
+    // and store the results in the output.txt file
+
     //Timing of Binary Tree.
+    myFile<< "BINARY TREE: " << endl;
     cout << "BINARY TREE: " << endl;
     clock_t timeBinary;
     timeBinary = clock();
-    for (int i = 0;i < 1000;i++)
-        t.searching(W[i]);
+    for (int i = 0;i < 10000;i++)
+    {
+        if(t.searching(W[i],stored)){
+            myFile<< W[i]<<"(" << stored << ")"<<endl;
+        }else{
+            myFile<< "Word '" << W[i] << "' not found." << endl;
+        }
+
+    }
     timeBinary = clock() - timeBinary;
+    myFile<<"\n"<<endl;
     cout << "\n" << endl;
 
 
     //Timing of AVL.
+    myFile<< "AVL: "<<endl;
     cout << "AVL: " << endl;
     clock_t timeAVL;
     timeAVL = clock();
-    for (int i = 0;i < 1000;i++)
-        a.searching(W[i]);
+    for (int i = 0;i < 10000;i++){
+
+        if(a.searching(W[i],stored)){
+                myFile<< W[i]<<"(" << stored << ")"<<endl;
+        }else{
+            myFile<< "Word '" << W[i] << "' not found." << endl;
+        }
+    }
+
     timeAVL = clock() - timeAVL;
+    myFile<<"\n"<<endl;
     cout << "\n" << endl;
 
 
     //Timing of Hash Table.
+    myFile<<"HASH TABLE: "<<endl;
     cout << "HASH TABLE: " << endl;
     clock_t timeHT;
     timeHT = clock();
-    for (int i = 0;i < 1000;i++)
-        h.Search(W[i]);
+    for (int i = 0;i < 10000;i++){
+
+        if(h.Search(W[i],stored)){
+            myFile<< W[i]<<"(" << stored << ")"<<endl;
+
+        }else{
+            myFile<< "Word '" << W[i] << "' not found." << endl;
+        }
+    }
     timeHT = clock() - timeHT;
+    myFile<<"\n"<<endl;
     cout << "\n" << endl;
 
 
-    //Printing the results.
-    cout << "Binary Tree took " << (float)timeBinary / CLOCKS_PER_SEC << " seconds" << endl;
+    //Timing of Sorted Array.
+
+    myFile<<"SORTED ARRAY: "<<endl;
+    cout<<"SORTED ARRAY: "<<endl;
+    clock_t timeSA;
+    timeSA= clock();
+    for(int i=0; i<10000; i++){
+
+        if(s.Search(W[i],stored)){
+                myFile<< W[i]<<"(" << stored << ")"<<endl;
+        }
+        else{
+            myFile<< "Word '" << W[i] << "' not found." << endl;
+        }
+
+    }
+    timeSA=clock()- timeSA;
+    myFile<<"\n"<<endl;
+    cout<<"\n"<<endl;
+
+
+    //Timing of UnSorted Array.
+
+    myFile<<"UNSORTED ARRAY: "<<endl;
+    cout<<"UNSORTED ARRAY: "<<endl;
+    clock_t timeUSA;
+    timeUSA=clock();
+    for(int i=0; i<10000; i++){
+        if(us.Search(W[i],stored)){
+            myFile<< W[i]<<"(" << stored << ")"<<endl;
+
+        }
+        else{
+            myFile<< "Word '" << W[i] << "' not found." << endl;
+        }
+    }
+    timeUSA=clock()-timeUSA;
+    myFile<<"\n"<<endl;
+    cout<<"\n"<<endl;
+
+    //Printing the results
+    cout<<"Binary Tree took " <<(float)timeBinary / CLOCKS_PER_SEC << " seconds" << endl;
     cout << "AVL took " << (float)timeAVL / CLOCKS_PER_SEC << " seconds" << endl;
-    cout << "Hash Table took " << (float)timeHT / CLOCKS_PER_SEC << " seconds" << endl;
+    cout<< "Hash Table took " << (float)timeHT / CLOCKS_PER_SEC << " seconds" << endl;
+    cout << "Sorted Array took " <<(float)timeSA/CLOCKS_PER_SEC<<" seconds"<<endl;
+    cout << "Unsorted Array took "<<(float)timeUSA/CLOCKS_PER_SEC<<" seconds"<<endl;
+
+
+
+    //Printing the results in the output file
+    myFile<<"Binary Tree took " <<(float)timeBinary / CLOCKS_PER_SEC << " seconds" << endl;
+    myFile << "AVL took " << (float)timeAVL / CLOCKS_PER_SEC << " seconds" << endl;
+    myFile<< "Hash Table took " << (float)timeHT / CLOCKS_PER_SEC << " seconds" << endl;
+    myFile << "Sorted Array took " <<(float)timeSA/CLOCKS_PER_SEC<<" seconds"<<endl;
+    myFile << "Unsorted Array took "<<(float)timeUSA/CLOCKS_PER_SEC<<" seconds"<<endl;
+
+    //Close the file
+    myFile.close();
+
+
+
+
     return 0;
 }

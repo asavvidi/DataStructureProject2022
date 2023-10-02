@@ -32,7 +32,7 @@ public:
     void inorder();
     void preorder();
     void postorder();
-    void searching(string x);
+    bool searching(string x,int& stored);
     virtual void removing(string x);
     friend bool operator<(string x, string y);
     friend bool operator>(string x, string y);

@@ -25,8 +25,8 @@ private:
     int Searching(string w);
 public:
     HashTable();
-    void add(string word);
-    void Search(string word);
+    virtual void add(string word);
+    bool Search(string word,int& stored);
     void print();
 };
 

@@ -132,11 +132,17 @@ int HashTable::Searching(string w)
 
 
 //public function Search
-void HashTable::Search(string word)
+bool HashTable::Search(string word,int& stored)
 {
     int j = Searching(word);
-    if (j > 0)
-        cout << word << "(" << HT[j].a << ")" << endl;
-    else
+    if (j > 0){
+        stored=HT[j].a;
+        cout << word << "(" << stored << ")" << endl;
+        return true;
+    }
+    else{
         cout << "Word '" << word << "' not found." << endl;
+        return false;
+    }
 }
+
